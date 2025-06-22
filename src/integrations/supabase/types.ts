@@ -9,7 +9,263 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      chat_conversations: {
+        Row: {
+          agent_type: string
+          created_at: string
+          id: string
+          messages: Json | null
+          session_id: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          agent_type: string
+          created_at?: string
+          id?: string
+          messages?: Json | null
+          session_id: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          agent_type?: string
+          created_at?: string
+          id?: string
+          messages?: Json | null
+          session_id?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      itineraries: {
+        Row: {
+          created_at: string
+          description: string | null
+          end_date: string
+          estimated_cost: number | null
+          id: string
+          is_senior_friendly: boolean | null
+          start_date: string
+          status: string | null
+          temples: string[] | null
+          title: string
+          total_days: number | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          end_date: string
+          estimated_cost?: number | null
+          id?: string
+          is_senior_friendly?: boolean | null
+          start_date: string
+          status?: string | null
+          temples?: string[] | null
+          title: string
+          total_days?: number | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          end_date?: string
+          estimated_cost?: number | null
+          id?: string
+          is_senior_friendly?: boolean | null
+          start_date?: string
+          status?: string | null
+          temples?: string[] | null
+          title?: string
+          total_days?: number | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      temple_reviews: {
+        Row: {
+          accessibility_rating: number | null
+          created_at: string
+          id: string
+          rating: number | null
+          review_text: string | null
+          temple_id: string
+          updated_at: string
+          user_id: string
+          visit_date: string | null
+        }
+        Insert: {
+          accessibility_rating?: number | null
+          created_at?: string
+          id?: string
+          rating?: number | null
+          review_text?: string | null
+          temple_id: string
+          updated_at?: string
+          user_id: string
+          visit_date?: string | null
+        }
+        Update: {
+          accessibility_rating?: number | null
+          created_at?: string
+          id?: string
+          rating?: number | null
+          review_text?: string | null
+          temple_id?: string
+          updated_at?: string
+          user_id?: string
+          visit_date?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "temple_reviews_temple_id_fkey"
+            columns: ["temple_id"]
+            isOneToOne: false
+            referencedRelation: "temples"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      temples: {
+        Row: {
+          accessibility_features: string[] | null
+          architecture_style: string | null
+          built_year: number | null
+          chanting_audio_url: string | null
+          contact_number: string | null
+          created_at: string
+          deity: string | null
+          district: string | null
+          dress_code: string | null
+          entry_fee: number | null
+          festivals: string[] | null
+          history: string | null
+          id: string
+          image_url: string | null
+          is_wheelchair_accessible: boolean | null
+          latitude: number | null
+          location: string
+          longitude: number | null
+          name: string
+          nearby_medical: string | null
+          parking_available: boolean | null
+          rating: number | null
+          reviews_count: number | null
+          significance: string | null
+          special_rituals: string[] | null
+          state: string
+          timing: string
+          updated_at: string
+          website: string | null
+        }
+        Insert: {
+          accessibility_features?: string[] | null
+          architecture_style?: string | null
+          built_year?: number | null
+          chanting_audio_url?: string | null
+          contact_number?: string | null
+          created_at?: string
+          deity?: string | null
+          district?: string | null
+          dress_code?: string | null
+          entry_fee?: number | null
+          festivals?: string[] | null
+          history?: string | null
+          id?: string
+          image_url?: string | null
+          is_wheelchair_accessible?: boolean | null
+          latitude?: number | null
+          location: string
+          longitude?: number | null
+          name: string
+          nearby_medical?: string | null
+          parking_available?: boolean | null
+          rating?: number | null
+          reviews_count?: number | null
+          significance?: string | null
+          special_rituals?: string[] | null
+          state: string
+          timing: string
+          updated_at?: string
+          website?: string | null
+        }
+        Update: {
+          accessibility_features?: string[] | null
+          architecture_style?: string | null
+          built_year?: number | null
+          chanting_audio_url?: string | null
+          contact_number?: string | null
+          created_at?: string
+          deity?: string | null
+          district?: string | null
+          dress_code?: string | null
+          entry_fee?: number | null
+          festivals?: string[] | null
+          history?: string | null
+          id?: string
+          image_url?: string | null
+          is_wheelchair_accessible?: boolean | null
+          latitude?: number | null
+          location?: string
+          longitude?: number | null
+          name?: string
+          nearby_medical?: string | null
+          parking_available?: boolean | null
+          rating?: number | null
+          reviews_count?: number | null
+          significance?: string | null
+          special_rituals?: string[] | null
+          state?: string
+          timing?: string
+          updated_at?: string
+          website?: string | null
+        }
+        Relationships: []
+      }
+      user_profiles: {
+        Row: {
+          accessibility_needs: string[] | null
+          age: number | null
+          created_at: string
+          full_name: string | null
+          id: string
+          is_senior: boolean | null
+          preferred_language: string | null
+          travel_preferences: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          accessibility_needs?: string[] | null
+          age?: number | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          is_senior?: boolean | null
+          preferred_language?: string | null
+          travel_preferences?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          accessibility_needs?: string[] | null
+          age?: number | null
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          is_senior?: boolean | null
+          preferred_language?: string | null
+          travel_preferences?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
