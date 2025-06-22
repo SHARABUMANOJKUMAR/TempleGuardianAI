@@ -32,8 +32,8 @@ Built entirely using **Lovable AI**, with no external automation tools (e.g., n8
 ## ⚙️ Lovable AI Setup
 
 ### Step 1: Create Master Prompt
-Go to [Lovable](https://lovable.so) → Create Project → Paste this as your Master Prompt:
+Go to [VS Code] → Create Project → Paste this as your Master Promt:
 
-```text
+
 You are part of a multi-agent assistant for TempleGuardianAI and Senior Travel & Tourism...
 [see full prompt in /prompts/master_prompt.txt]
