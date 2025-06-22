@@ -1,32 +1,31 @@
-# Enable sponsor options on GitHub
+<h1 align="center">🛕 TempleGuardianAI & 👵 Senior Travel Companion</h1>
 
-# GitHub Sponsors 
-github: S.MANOJ KUMAR
+<p align="center">
+  A multi-agent system built using <a href="https://temple-guardian-ai.lovable.app/" target="_blank">TempleGuardian AI</a> for spiritual travel planning, senior-friendly tours, and temple guidance across India. 💬🌍✨
+</p>
 
-# UPI support via Razorpay or PhonePe
-custom: 
-  - https://rzp.io/l/templeguardian
-  - https://wa.me/917013550760?text=I'd%20like%20to%20donate%20to%20TempleGuardianAI
-  - upi://pay?pa=7013550760@phonpe&pn=TempleGuardianAI&cu=INR
+<p align="center">
+  <img src="https://www.tourmyindia.com/heritage/images/brihadeeswarar1.jpg" width="300" />
+</p>
 
-# Patreon 
-SHAIVIKA GROUPS
+---
 
-# Ko-fi 
-S.MANOJ KUMAR (SHAIVIKA GROUPS)
+## 🌟 Key Features
 
-# Buy Me a Coffee 
-S.MANOJ KUMAR
+🔹 **TempleGuideAgent** – Temple details, history, darshan timings  
+🔹 **TripPlannerAgent** – Custom day-wise itinerary builder  
+🔹 **SeniorAdvisorAgent** – Wheelchair-accessible travel tips and emergency care suggestions  
+🔹 **BookingAgent** – Auto-generated WhatsApp or UPI links for booking or donations  
+🔹 **ShareAgent** – One-click PDF, WhatsApp messages, and Google Calendar exports  
 
-# OpenCollective 
-7013550760
-## 💖 Sponsor This Project
+---
 
-Help us grow TempleGuardianAI and reach more users:
+## 🧠 How It Works – Multi-Agent Workflow (Lovable AI)
 
-- [Donate via Razorpay](https://rzp.io/l/templeguardian)
-- [UPI: achari.manoj2@ibl](upi://pay?pa=7013550760@phonepe&pn=TempleGuardianAI&cu=INR)
-- [Message us on WhatsApp](https://wa.me/917013550760?text=I'd%20like%20to%20support%20TempleGuardianAI)
-
-Or sponsor us via:
-[![Ko-fi](https://img.shields.io/badge/Buy%20Me%20a%20Chai-yellow)](https://ko-fi.com/your-kofi-username)
+```mermaid
+graph LR
+A[User Input] --> B[TempleGuideAgent]
+B --> C[TripPlannerAgent]
+C --> D[SeniorAdvisorAgent]
+D --> E[BookingAgent]
+E --> F[ShareAgent]
