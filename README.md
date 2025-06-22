@@ -1,6 +1,6 @@
 # 🛕 TempleGuardianAI & 👵 Senior Travel Multi-Agent System
 
-A powerful multi-agent system built using [Lovable AI](https://lovable.so), designed to assist users with temple visits and senior-friendly travel planning across India.
+A powerful multi-agent system built in [VisualStudio Code](https://lovable.so), designed to assist users with temple visits and senior-friendly travel planning across India.
 
 ---
 
