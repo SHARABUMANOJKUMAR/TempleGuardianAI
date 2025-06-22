@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,6 +5,7 @@ import { ArrowLeft, Share2, MapPin, Clock, Accessibility } from "lucide-react";
 import { TempleCard } from "./TempleCard";
 import { ShareOptions } from "./ShareOptions";
 import type { Agent, TravelPlan } from "@/pages/Index";
+import type { Temple } from "@/hooks/useTemples";
 
 interface ItineraryDisplayProps {
   plan: TravelPlan;
@@ -13,28 +13,67 @@ interface ItineraryDisplayProps {
   onBack: () => void;
 }
 
-// Mock data for demonstration
-const mockTemples = [
+// Mock data that matches the Temple interface
+const mockTemples: Temple[] = [
   {
+    id: "mock-1",
     name: "Kashi Vishwanath Temple",
     location: "Varanasi, Uttar Pradesh",
+    state: "Uttar Pradesh",
+    district: "Varanasi",
+    latitude: 25.3109,
+    longitude: 83.0107,
     timing: "4:00 AM - 11:00 PM",
-    image: "🛕",
-    accessibility: "Wheelchair accessible main entrance",
-    specialNote: "Senior-friendly: Dedicated seating area available",
-    nearbyMedical: "BHU Hospital - 2.5 km"
+    history: "One of the most famous Hindu temples dedicated to Lord Shiva",
+    significance: "One of the twelve Jyotirlingas",
+    deity: "Lord Shiva",
+    architecture_style: "North Indian",
+    built_year: 1780,
+    image_url: "🛕",
+    accessibility_features: ["Wheelchair accessible main entrance", "Dedicated seating area"],
+    nearby_medical: "BHU Hospital - 2.5 km",
+    entry_fee: 0,
+    dress_code: "Traditional Indian attire preferred",
+    special_rituals: ["Mangla Aarti", "Bhog Aarti", "Sandhya Aarti"],
+    festivals: ["Mahashivratri", "Kartik Purnima"],
+    rating: 4.8,
+    reviews_count: 12500,
+    is_wheelchair_accessible: true,
+    parking_available: true,
+    created_at: "2024-01-01T00:00:00Z",
+    updated_at: "2024-01-01T00:00:00Z"
   },
   {
+    id: "mock-2",
     name: "Sankat Mochan Hanuman Temple",
     location: "Varanasi, Uttar Pradesh", 
+    state: "Uttar Pradesh",
+    district: "Varanasi",
+    latitude: 25.2677,
+    longitude: 82.9913,
     timing: "5:00 AM - 10:00 PM",
-    image: "🐒",
-    accessibility: "Ramp available, limited stairs",
-    specialNote: "Peaceful environment, good for seniors",
-    nearbyMedical: "Heritage Hospital - 1.8 km"
+    history: "Founded by Tulsidas in the early 16th century",
+    significance: "Famous for solving devotees' problems and difficulties",
+    deity: "Lord Hanuman",
+    architecture_style: "Traditional",
+    built_year: 1900,
+    image_url: "🐒",
+    accessibility_features: ["Ramp available", "Limited stairs"],
+    nearby_medical: "Heritage Hospital - 1.8 km",
+    entry_fee: 0,
+    dress_code: "Modest clothing required",
+    special_rituals: ["Morning Aarti", "Evening Bhajan"],
+    festivals: ["Hanuman Jayanti", "Tuesday Special"],
+    rating: 4.6,
+    reviews_count: 8500,
+    is_wheelchair_accessible: true,
+    parking_available: true,
+    created_at: "2024-01-01T00:00:00Z",
+    updated_at: "2024-01-01T00:00:00Z"
   }
 ];
 
+// Mock data for demonstration
 const mockItinerary = [
   {
     day: "Day 1",
@@ -110,8 +149,8 @@ export const ItineraryDisplay = ({ plan, agent, onBack }: ItineraryDisplayProps)
             Recommended Temples
           </h3>
           <div className="space-y-4">
-            {mockTemples.map((temple, index) => (
-              <TempleCard key={index} temple={temple} showAccessibility={plan.isSenior} />
+            {mockTemples.map((temple) => (
+              <TempleCard key={temple.id} temple={temple} showAccessibility={plan.isSenior} />
             ))}
           </div>
         </div>
