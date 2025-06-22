@@ -20,7 +20,7 @@
 
 ---
 
-## 🧠 How It Works – Multi-Agent Workflow (Lovable AI)
+## 🧠 How It Works – Multi-Agent Workflow 
 
 ```mermaid
 graph LR
