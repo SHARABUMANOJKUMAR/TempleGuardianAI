@@ -62,7 +62,12 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 relative overflow-hidden">
       {/* Beautiful animated background */}
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"%3E%3Cdefs%3E%3Cpattern id="om" x="0" y="0" width="50" height="50" patternUnits="userSpaceOnUse"%3E%3Ctext x="25" y="30" text-anchor="middle" font-size="20" fill="%23f59e0b" opacity="0.1"%3E🕉️%3C/text%3E%3C/pattern%3E%3C/defs%3E%3Crect width="100" height="100" fill="url(%23om)"/%3E%3C/svg%3E')] opacity-20"></div>
+      <div 
+        className="absolute inset-0 opacity-20"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3Cpattern id='om' x='0' y='0' width='50' height='50' patternUnits='userSpaceOnUse'%3E%3Ctext x='25' y='30' text-anchor='middle' font-size='20' fill='%23f59e0b' opacity='0.1'%3E🕉️%3C/text%3E%3C/pattern%3E%3C/defs%3E%3Crect width='100' height='100' fill='url(%23om)'/%3E%3C/svg%3E")`
+        }}
+      ></div>
       
       <Header onReset={resetToStart} />
       
