@@ -63,21 +63,21 @@ const Index = () => {
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
       <Header onReset={resetToStart} />
       
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
         {currentStep === "select" && (
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12">
-              <h1 className="text-4xl md:text-5xl font-bold text-orange-900 mb-4">
+            <div className="text-center mb-8 sm:mb-12 px-4">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-orange-900 mb-4">
                 🛕 Temple Guardian AI
               </h1>
-              <p className="text-lg text-orange-700 max-w-2xl mx-auto mb-6">
+              <p className="text-base sm:text-lg text-orange-700 max-w-2xl mx-auto mb-6">
                 Your intelligent companion for temple visits and spiritual journeys across India with AI-powered assistance
               </p>
-              <div className="flex flex-wrap justify-center gap-4">
+              <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
                 <Button
                   onClick={goToExplore}
                   variant="outline"
-                  className="border-orange-300 text-orange-700 hover:bg-orange-50"
+                  className="border-orange-300 text-orange-700 hover:bg-orange-50 w-full sm:w-auto"
                 >
                   <Grid3X3 size={16} className="mr-2" />
                   Explore Temples
@@ -85,7 +85,7 @@ const Index = () => {
                 <Button
                   onClick={() => setShowVoiceAssistant(!showVoiceAssistant)}
                   variant="outline"
-                  className="border-purple-300 text-purple-700 hover:bg-purple-50"
+                  className="border-purple-300 text-purple-700 hover:bg-purple-50 w-full sm:w-auto"
                 >
                   <Mic size={16} className="mr-2" />
                   Voice Assistant
@@ -94,17 +94,19 @@ const Index = () => {
             </div>
 
             {showVoiceAssistant && (
-              <div className="mb-8 max-w-md mx-auto">
+              <div className="mb-8 max-w-md mx-auto px-4">
                 <VoiceAssistant onResponse={handleVoiceResponse} />
               </div>
             )}
 
-            <AgentSelector onAgentSelect={handleAgentSelect} />
+            <div className="px-4">
+              <AgentSelector onAgentSelect={handleAgentSelect} />
+            </div>
           </div>
         )}
 
         {currentStep === "form" && activeAgent && (
-          <div className="max-w-2xl mx-auto">
+          <div className="max-w-2xl mx-auto px-4">
             <TravelForm 
               agent={activeAgent} 
               onSubmit={handlePlanSubmit}
@@ -114,7 +116,7 @@ const Index = () => {
         )}
 
         {currentStep === "results" && travelPlan && (
-          <div className="max-w-6xl mx-auto">
+          <div className="max-w-6xl mx-auto px-4">
             <ItineraryDisplay 
               plan={travelPlan} 
               agent={activeAgent!}
@@ -125,40 +127,40 @@ const Index = () => {
 
         {currentStep === "explore" && (
           <div className="max-w-7xl mx-auto">
-            <Card className="bg-white/80 backdrop-blur-sm border-orange-200 mb-6">
+            <Card className="bg-white/80 backdrop-blur-sm border-orange-200 mb-6 mx-4">
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-orange-900">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <CardTitle className="text-orange-900 text-lg sm:text-xl">
                     🛕 Sacred Temple Explorer
                   </CardTitle>
                   <Button
                     onClick={() => setCurrentStep("select")}
                     variant="outline"
-                    className="border-orange-300 text-orange-700 hover:bg-orange-50"
+                    className="border-orange-300 text-orange-700 hover:bg-orange-50 w-full sm:w-auto"
                   >
                     Back to Home
                   </Button>
                 </div>
               </CardHeader>
               <CardContent>
-                <p className="text-orange-700 mb-4">
+                <p className="text-orange-700 mb-4 text-sm sm:text-base">
                   Discover India's most sacred temples with our comprehensive database of 50+ temples, 
                   complete with history, accessibility information, and spiritual guidance.
                 </p>
                 
                 <Tabs defaultValue="grid" className="w-full">
-                  <TabsList className="grid w-full grid-cols-3">
-                    <TabsTrigger value="grid" className="flex items-center gap-2">
-                      <Grid3X3 size={16} />
-                      Temple Grid
+                  <TabsList className="grid w-full grid-cols-3 mb-6">
+                    <TabsTrigger value="grid" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+                      <Grid3X3 size={14} />
+                      <span className="hidden sm:inline">Temple</span> Grid
                     </TabsTrigger>
-                    <TabsTrigger value="map" className="flex items-center gap-2">
-                      <MapIcon size={16} />
-                      Map View
+                    <TabsTrigger value="map" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+                      <MapIcon size={14} />
+                      <span className="hidden sm:inline">Map</span> View
                     </TabsTrigger>
-                    <TabsTrigger value="chat" className="flex items-center gap-2">
-                      <MessageCircle size={16} />
-                      AI Assistant
+                    <TabsTrigger value="chat" className="flex items-center gap-1 sm:gap-2 text-xs sm:text-sm">
+                      <MessageCircle size={14} />
+                      <span className="hidden sm:inline">AI</span> Assistant
                     </TabsTrigger>
                   </TabsList>
                   
@@ -166,7 +168,7 @@ const Index = () => {
                     <TempleGrid />
                   </TabsContent>
                   
-                  <TabsContent value="map" className="mt-6">
+                  <TabsContent value="map" className="mt-6 px-4">
                     <GoogleMap 
                       temples={temples}
                       selectedTemple={selectedTemple}
@@ -174,7 +176,7 @@ const Index = () => {
                     />
                   </TabsContent>
                   
-                  <TabsContent value="chat" className="mt-6">
+                  <TabsContent value="chat" className="mt-6 px-4">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                       <AIChat agent="temple" />
                       <div className="space-y-4">

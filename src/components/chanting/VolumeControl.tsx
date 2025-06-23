@@ -13,16 +13,16 @@ export const VolumeControl = ({ volume, onVolumeChange }: VolumeControlProps) =>
   };
 
   return (
-    <div className="flex items-center gap-2">
-      <Volume2 size={16} className="text-amber-600" />
+    <div className="flex items-center gap-2 px-2">
+      <Volume2 size={14} className="text-amber-600 flex-shrink-0" />
       <Slider
         value={[volume]}
         onValueChange={handleVolumeChange}
         max={100}
         step={1}
-        className="flex-1"
+        className="flex-1 min-w-0"
       />
-      <span className="text-xs text-amber-600 w-8">{volume}%</span>
+      <span className="text-xs text-amber-600 w-8 text-right flex-shrink-0">{volume}%</span>
     </div>
   );
 };

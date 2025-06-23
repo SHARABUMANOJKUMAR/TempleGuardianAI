@@ -14,8 +14,8 @@ export const TempleGrid = () => {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {Array.from({ length: 6 }).map((_, i) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-4">
+        {Array.from({ length: 8 }).map((_, i) => (
           <Card key={i} className="animate-pulse">
             <CardHeader>
               <div className="h-6 bg-orange-200 rounded"></div>
@@ -34,7 +34,7 @@ export const TempleGrid = () => {
 
   if (error) {
     return (
-      <Card className="border-red-200 bg-red-50">
+      <Card className="border-red-200 bg-red-50 mx-4">
         <CardContent className="p-6">
           <p className="text-red-700">Error loading temples. Please try again.</p>
         </CardContent>
@@ -53,16 +53,16 @@ export const TempleGrid = () => {
   }) || [];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 p-4">
       <Card className="bg-white/80 backdrop-blur-sm border-orange-200">
-        <CardHeader>
-          <CardTitle className="text-orange-900 flex items-center gap-2">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-orange-900 flex items-center gap-2 text-lg">
             <Search size={20} />
             Discover Sacred Temples
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col md:flex-row gap-4">
+          <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-3 text-orange-400" size={16} />
               <Input
@@ -72,10 +72,10 @@ export const TempleGrid = () => {
                 className="pl-10 border-orange-200 focus:border-orange-400"
               />
             </div>
-            <div className="flex items-center gap-2">
-              <Filter size={16} className="text-orange-600" />
+            <div className="flex items-center gap-2 sm:w-auto w-full">
+              <Filter size={16} className="text-orange-600 flex-shrink-0" />
               <Select value={selectedState} onValueChange={setSelectedState}>
-                <SelectTrigger className="w-48 border-orange-200">
+                <SelectTrigger className="sm:w-48 w-full border-orange-200">
                   <SelectValue placeholder="Filter by state" />
                 </SelectTrigger>
                 <SelectContent>
@@ -90,20 +90,20 @@ export const TempleGrid = () => {
         </CardContent>
       </Card>
 
-      <div className="text-center mb-6">
-        <p className="text-orange-700">
+      <div className="text-center">
+        <p className="text-orange-700 text-sm">
           Found {filteredTemples.length} sacred temples
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {filteredTemples.map((temple) => (
           <TempleCard key={temple.id} temple={temple} showAccessibility={true} />
         ))}
       </div>
 
       {filteredTemples.length === 0 && (
-        <Card className="border-orange-200 bg-orange-50">
+        <Card className="border-orange-200 bg-orange-50 mx-4">
           <CardContent className="p-12 text-center">
             <p className="text-orange-700 text-lg">
               No temples found matching your criteria.

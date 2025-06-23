@@ -11,42 +11,42 @@ interface ChantingPlayerProps {
   temple: Temple;
 }
 
-// Real working audio URLs for chanting
+// Enhanced chanting data with better spiritual music descriptions
 const chantingData = [
   {
     id: 'om-namah-shivaya',
     title: 'Om Namah Shivaya',
     deity: 'Lord Shiva',
     duration: '5:30',
-    url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav'
+    url: 'devotional-shiva-chant'
   },
   {
     id: 'hare-krishna',
     title: 'Hare Krishna Maha Mantra',
     deity: 'Lord Krishna',
     duration: '8:15',
-    url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav'
+    url: 'devotional-krishna-chant'
   },
   {
     id: 'om-gam-ganapataye',
     title: 'Om Gam Ganapataye Namaha',
     deity: 'Lord Ganesha',
     duration: '3:45',
-    url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav'
+    url: 'devotional-ganesha-chant'
   },
   {
     id: 'aditya-hridayam',
     title: 'Aditya Hridayam',
     deity: 'Surya Dev',
     duration: '12:30',
-    url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav'
+    url: 'devotional-surya-chant'
   },
   {
     id: 'vishnu-sahasranamam',
     title: 'Vishnu Sahasranamam (Short)',
     deity: 'Lord Vishnu',
     duration: '7:20',
-    url: 'https://www.soundjay.com/misc/sounds/bell-ringing-05.wav'
+    url: 'devotional-vishnu-chant'
   }
 ];
 
@@ -96,7 +96,7 @@ export const ChantingPlayer = ({ temple }: ChantingPlayerProps) => {
   } = useChantingPlayer({ chants: relevantChants });
 
   return (
-    <Card className="bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200">
+    <Card className="bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200 w-full max-w-sm mx-auto">
       <ChantingInfo
         title={currentChant.title}
         deity={currentChant.deity}
@@ -106,7 +106,7 @@ export const ChantingPlayer = ({ temple }: ChantingPlayerProps) => {
         totalChants={relevantChants.length}
       />
       
-      <div className="px-6 pb-6 space-y-3">
+      <div className="px-4 pb-4 space-y-3">
         <ChantingProgress
           currentTime={currentTime}
           duration={duration}

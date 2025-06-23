@@ -24,7 +24,7 @@ export const useChantingPlayer = ({ chants, initialVolume = 70 }: UseChantingPla
   
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
-  const oscillatorRef = useRef<OscillatorNode | null>(null);
+  const oscillatorsRef = useRef<OscillatorNode[]>([]);
   const gainNodeRef = useRef<GainNode | null>(null);
 
   const currentChant = chants[currentChantIndex];
@@ -36,18 +36,64 @@ export const useChantingPlayer = ({ chants, initialVolume = 70 }: UseChantingPla
   };
 
   const stopCurrentAudio = () => {
-    if (oscillatorRef.current) {
+    oscillatorsRef.current.forEach(osc => {
       try {
-        oscillatorRef.current.stop();
+        osc.stop();
       } catch (error) {
         // Oscillator already stopped
       }
-      oscillatorRef.current = null;
-    }
+    });
+    oscillatorsRef.current = [];
+    
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
+  };
+
+  const createDevotionalHarmony = (audioContext: AudioContext, gainNode: GainNode) => {
+    // Create a harmonious blend of frequencies that sound like devotional music
+    const frequencies = [
+      261.63, // C4 - Root note
+      329.63, // E4 - Major third
+      392.00, // G4 - Perfect fifth
+      523.25, // C5 - Octave
+    ];
+
+    const oscillators: OscillatorNode[] = [];
+
+    frequencies.forEach((freq, index) => {
+      const oscillator = audioContext.createOscillator();
+      const oscillatorGain = audioContext.createGain();
+      
+      oscillator.connect(oscillatorGain);
+      oscillatorGain.connect(gainNode);
+      
+      oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+      oscillator.type = 'sine';
+      
+      // Set different volumes for harmony
+      const baseVolume = volume / 100 * 0.15;
+      const volumes = [baseVolume, baseVolume * 0.6, baseVolume * 0.4, baseVolume * 0.3];
+      oscillatorGain.gain.setValueAtTime(volumes[index], audioContext.currentTime);
+      
+      // Add subtle vibrato for spiritual effect
+      const lfoGain = audioContext.createGain();
+      const lfo = audioContext.createOscillator();
+      lfo.frequency.setValueAtTime(4.5, audioContext.currentTime);
+      lfo.type = 'sine';
+      lfoGain.gain.setValueAtTime(2, audioContext.currentTime);
+      
+      lfo.connect(lfoGain);
+      lfoGain.connect(oscillator.frequency);
+      
+      oscillator.start();
+      lfo.start();
+      
+      oscillators.push(oscillator);
+    });
+
+    return oscillators;
   };
 
   const togglePlayPause = async () => {
@@ -59,21 +105,15 @@ export const useChantingPlayer = ({ chants, initialVolume = 70 }: UseChantingPla
         setIsLoading(true);
         
         const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-        const oscillator = audioContext.createOscillator();
         const gainNode = audioContext.createGain();
-        
-        oscillator.connect(gainNode);
         gainNode.connect(audioContext.destination);
         
-        oscillator.frequency.setValueAtTime(220, audioContext.currentTime);
-        oscillator.type = 'sine';
-        gainNode.gain.setValueAtTime(volume / 100 * 0.3, audioContext.currentTime);
-        
         audioContextRef.current = audioContext;
-        oscillatorRef.current = oscillator;
         gainNodeRef.current = gainNode;
         
-        oscillator.start();
+        // Create devotional harmony instead of single tone
+        const oscillators = createDevotionalHarmony(audioContext, gainNode);
+        oscillatorsRef.current = oscillators;
         
         setIsPlaying(true);
         setIsLoading(false);
@@ -92,13 +132,7 @@ export const useChantingPlayer = ({ chants, initialVolume = 70 }: UseChantingPla
         }, 1000);
         
         setTimeout(() => {
-          if (oscillatorRef.current) {
-            try {
-              oscillatorRef.current.stop();
-            } catch (error) {
-              // Already stopped
-            }
-          }
+          stopCurrentAudio();
         }, duration * 1000);
         
       } catch (error) {
@@ -114,8 +148,9 @@ export const useChantingPlayer = ({ chants, initialVolume = 70 }: UseChantingPla
 
   const handleVolumeChange = (newVolume: number) => {
     setVolume(newVolume);
-    if (gainNodeRef.current) {
-      gainNodeRef.current.gain.setValueAtTime(newVolume / 100 * 0.3, audioContextRef.current?.currentTime || 0);
+    if (gainNodeRef.current && audioContextRef.current) {
+      const baseVolume = newVolume / 100 * 0.15;
+      gainNodeRef.current.gain.setValueAtTime(baseVolume, audioContextRef.current.currentTime);
     }
   };
 
