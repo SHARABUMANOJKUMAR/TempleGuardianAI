@@ -18,12 +18,12 @@ export const ChantingControls = ({
   onPrevious 
 }: ChantingControlsProps) => {
   return (
-    <div className="flex items-center justify-center gap-2 px-2">
+    <div className="flex items-center justify-center gap-3 sm:gap-4 px-2">
       <Button
         variant="outline"
         size="sm"
         onClick={onPrevious}
-        className="border-amber-300 text-amber-700 hover:bg-amber-50 h-8 w-8 p-0"
+        className="border-amber-300 text-amber-700 hover:bg-amber-50 h-8 w-8 sm:h-9 sm:w-9 p-0 transition-all duration-200 hover:scale-105"
         disabled={isLoading}
       >
         <SkipBack size={14} />
@@ -31,15 +31,15 @@ export const ChantingControls = ({
       
       <Button
         onClick={onTogglePlayPause}
-        className="bg-amber-500 hover:bg-amber-600 text-white h-10 w-10 rounded-full p-0"
+        className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white h-12 w-12 sm:h-14 sm:w-14 rounded-full p-0 transition-all duration-200 hover:scale-110 shadow-lg"
         disabled={isLoading}
       >
         {isLoading ? (
-          <div className="w-3 h-3 border-2 border-white border-t-transparent rounded-full animate-spin" />
+          <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
         ) : isPlaying ? (
-          <Pause size={16} />
+          <Pause size={18} />
         ) : (
-          <Play size={16} />
+          <Play size={18} className="ml-0.5" />
         )}
       </Button>
       
@@ -47,7 +47,7 @@ export const ChantingControls = ({
         variant="outline"
         size="sm"
         onClick={onNext}
-        className="border-amber-300 text-amber-700 hover:bg-amber-50 h-8 w-8 p-0"
+        className="border-amber-300 text-amber-700 hover:bg-amber-50 h-8 w-8 sm:h-9 sm:w-9 p-0 transition-all duration-200 hover:scale-105"
         disabled={isLoading}
       >
         <SkipForward size={14} />

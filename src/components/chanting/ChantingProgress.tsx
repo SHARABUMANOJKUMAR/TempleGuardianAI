@@ -21,8 +21,8 @@ export const ChantingProgress = ({
   };
 
   return (
-    <div className="flex items-center gap-2 px-2">
-      <span className="text-xs text-amber-600 w-10 text-left flex-shrink-0">
+    <div className="flex items-center gap-2 sm:gap-3 px-2">
+      <span className="text-xs text-amber-600 w-8 sm:w-10 text-left flex-shrink-0 font-mono">
         {formatTime(currentTime)}
       </span>
       <Slider
@@ -33,7 +33,7 @@ export const ChantingProgress = ({
         className="flex-1 min-w-0"
         disabled={isLoading}
       />
-      <span className="text-xs text-amber-600 w-10 text-right flex-shrink-0">
+      <span className="text-xs text-amber-600 w-8 sm:w-10 text-right flex-shrink-0 font-mono">
         {formatTime(duration)}
       </span>
     </div>

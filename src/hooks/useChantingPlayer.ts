@@ -25,7 +25,8 @@ export const useChantingPlayer = ({ chants, initialVolume = 70 }: UseChantingPla
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const audioContextRef = useRef<AudioContext | null>(null);
   const oscillatorsRef = useRef<OscillatorNode[]>([]);
-  const gainNodeRef = useRef<GainNode | null>(null);
+  const gainNodesRef = useRef<GainNode[]>([]);
+  const masterGainRef = useRef<GainNode | null>(null);
 
   const currentChant = chants[currentChantIndex];
 
@@ -40,10 +41,11 @@ export const useChantingPlayer = ({ chants, initialVolume = 70 }: UseChantingPla
       try {
         osc.stop();
       } catch (error) {
-        // Oscillator already stopped
+        console.log('Oscillator already stopped');
       }
     });
     oscillatorsRef.current = [];
+    gainNodesRef.current = [];
     
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
@@ -51,49 +53,84 @@ export const useChantingPlayer = ({ chants, initialVolume = 70 }: UseChantingPla
     }
   };
 
-  const createDevotionalHarmony = (audioContext: AudioContext, gainNode: GainNode) => {
-    // Create a harmonious blend of frequencies that sound like devotional music
-    const frequencies = [
-      261.63, // C4 - Root note
-      329.63, // E4 - Major third
-      392.00, // G4 - Perfect fifth
-      523.25, // C5 - Octave
-    ];
+  const createDevotionalChant = (audioContext: AudioContext, masterGain: GainNode) => {
+    // Create beautiful, spiritual sounding frequencies based on Indian classical ragas
+    const devotionalFrequencies = {
+      'om-namah-shivaya': [
+        { freq: 138.59, type: 'sine' as OscillatorType }, // Om base frequency
+        { freq: 207.89, type: 'triangle' as OscillatorType }, // Sacred harmonic
+        { freq: 277.18, type: 'sine' as OscillatorType }, // Spiritual overtone
+        { freq: 415.77, type: 'sawtooth' as OscillatorType }, // Divine resonance
+      ],
+      'hare-krishna': [
+        { freq: 164.81, type: 'sine' as OscillatorType }, // Krishna's flute tone
+        { freq: 246.94, type: 'triangle' as OscillatorType }, // Devotional harmony
+        { freq: 329.63, type: 'sine' as OscillatorType }, // Love frequency
+        { freq: 493.88, type: 'sawtooth' as OscillatorType }, // Blissful overtone
+      ],
+      'om-gam-ganapataye': [
+        { freq: 146.83, type: 'sine' as OscillatorType }, // Ganesha's sacred tone
+        { freq: 220.00, type: 'triangle' as OscillatorType }, // Obstacle removal frequency
+        { freq: 293.66, type: 'sine' as OscillatorType }, // Wisdom vibration
+        { freq: 440.00, type: 'sawtooth' as OscillatorType }, // Success harmony
+      ],
+      default: [
+        { freq: 136.10, type: 'sine' as OscillatorType }, // Universal Om
+        { freq: 204.15, type: 'triangle' as OscillatorType }, // Sacred geometry
+        { freq: 272.20, type: 'sine' as OscillatorType }, // Divine proportion
+        { freq: 408.30, type: 'sawtooth' as OscillatorType }, // Spiritual elevation
+      ]
+    };
 
+    const chantFreqs = devotionalFrequencies[currentChant.id as keyof typeof devotionalFrequencies] || devotionalFrequencies.default;
     const oscillators: OscillatorNode[] = [];
+    const gainNodes: GainNode[] = [];
 
-    frequencies.forEach((freq, index) => {
+    chantFreqs.forEach((freqData, index) => {
+      // Create oscillator for the main tone
       const oscillator = audioContext.createOscillator();
-      const oscillatorGain = audioContext.createGain();
+      const gainNode = audioContext.createGain();
       
-      oscillator.connect(oscillatorGain);
-      oscillatorGain.connect(gainNode);
+      oscillator.connect(gainNode);
+      gainNode.connect(masterGain);
       
-      oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
-      oscillator.type = 'sine';
+      oscillator.frequency.setValueAtTime(freqData.freq, audioContext.currentTime);
+      oscillator.type = freqData.type;
       
-      // Set different volumes for harmony
-      const baseVolume = volume / 100 * 0.15;
-      const volumes = [baseVolume, baseVolume * 0.6, baseVolume * 0.4, baseVolume * 0.3];
-      oscillatorGain.gain.setValueAtTime(volumes[index], audioContext.currentTime);
+      // Set volumes to create rich, layered sound
+      const baseVolume = (volume / 100) * 0.08; // Much softer base volume
+      const volumes = [baseVolume * 1.2, baseVolume * 0.8, baseVolume * 0.6, baseVolume * 0.4];
+      gainNode.gain.setValueAtTime(volumes[index] || baseVolume * 0.3, audioContext.currentTime);
       
-      // Add subtle vibrato for spiritual effect
-      const lfoGain = audioContext.createGain();
+      // Add gentle vibrato for spiritual effect
       const lfo = audioContext.createOscillator();
-      lfo.frequency.setValueAtTime(4.5, audioContext.currentTime);
+      const lfoGain = audioContext.createGain();
+      lfo.frequency.setValueAtTime(3.5 + Math.random() * 2, audioContext.currentTime); // Slower, more meditative vibrato
       lfo.type = 'sine';
-      lfoGain.gain.setValueAtTime(2, audioContext.currentTime);
+      lfoGain.gain.setValueAtTime(1.5, audioContext.currentTime);
       
       lfo.connect(lfoGain);
       lfoGain.connect(oscillator.frequency);
       
+      // Add subtle amplitude modulation for breathing effect
+      const ampLfo = audioContext.createOscillator();
+      const ampGain = audioContext.createGain();
+      ampLfo.frequency.setValueAtTime(0.5 + Math.random() * 0.3, audioContext.currentTime); // Very slow breathing
+      ampLfo.type = 'sine';
+      ampGain.gain.setValueAtTime(0.2, audioContext.currentTime);
+      
+      ampLfo.connect(ampGain);
+      ampGain.connect(gainNode.gain);
+      
       oscillator.start();
       lfo.start();
+      ampLfo.start();
       
       oscillators.push(oscillator);
+      gainNodes.push(gainNode);
     });
 
-    return oscillators;
+    return { oscillators, gainNodes };
   };
 
   const togglePlayPause = async () => {
@@ -104,20 +141,52 @@ export const useChantingPlayer = ({ chants, initialVolume = 70 }: UseChantingPla
       try {
         setIsLoading(true);
         
-        const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-        const gainNode = audioContext.createGain();
-        gainNode.connect(audioContext.destination);
+        // Create audio context with better settings
+        const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)({
+          sampleRate: 44100,
+          latencyHint: 'interactive'
+        });
+        
+        const masterGain = audioContext.createGain();
+        
+        // Add a subtle reverb effect for spiritual ambiance
+        const convolver = audioContext.createConvolver();
+        const reverbGain = audioContext.createGain();
+        
+        // Create impulse response for reverb (simple hall reverb)
+        const reverbTime = 2.0;
+        const sampleRate = audioContext.sampleRate;
+        const length = sampleRate * reverbTime;
+        const impulse = audioContext.createBuffer(2, length, sampleRate);
+        
+        for (let channel = 0; channel < 2; channel++) {
+          const channelData = impulse.getChannelData(channel);
+          for (let i = 0; i < length; i++) {
+            channelData[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, 2);
+          }
+        }
+        
+        convolver.buffer = impulse;
+        reverbGain.gain.setValueAtTime(0.3, audioContext.currentTime);
+        
+        // Connect the audio chain
+        masterGain.connect(reverbGain);
+        reverbGain.connect(convolver);
+        convolver.connect(audioContext.destination);
+        masterGain.connect(audioContext.destination); // Also connect dry signal
         
         audioContextRef.current = audioContext;
-        gainNodeRef.current = gainNode;
+        masterGainRef.current = masterGain;
         
-        // Create devotional harmony instead of single tone
-        const oscillators = createDevotionalHarmony(audioContext, gainNode);
+        // Create devotional chant
+        const { oscillators, gainNodes } = createDevotionalChant(audioContext, masterGain);
         oscillatorsRef.current = oscillators;
+        gainNodesRef.current = gainNodes;
         
         setIsPlaying(true);
         setIsLoading(false);
         
+        // Start timing
         intervalRef.current = setInterval(() => {
           setCurrentTime(prev => {
             const newTime = prev + 1;
@@ -130,10 +199,6 @@ export const useChantingPlayer = ({ chants, initialVolume = 70 }: UseChantingPla
             return newTime;
           });
         }, 1000);
-        
-        setTimeout(() => {
-          stopCurrentAudio();
-        }, duration * 1000);
         
       } catch (error) {
         console.error('Audio playback failed:', error);
@@ -148,9 +213,9 @@ export const useChantingPlayer = ({ chants, initialVolume = 70 }: UseChantingPla
 
   const handleVolumeChange = (newVolume: number) => {
     setVolume(newVolume);
-    if (gainNodeRef.current && audioContextRef.current) {
-      const baseVolume = newVolume / 100 * 0.15;
-      gainNodeRef.current.gain.setValueAtTime(baseVolume, audioContextRef.current.currentTime);
+    if (masterGainRef.current && audioContextRef.current) {
+      const newGain = (newVolume / 100) * 0.15;
+      masterGainRef.current.gain.setValueAtTime(newGain, audioContextRef.current.currentTime);
     }
   };
 
@@ -183,6 +248,9 @@ export const useChantingPlayer = ({ chants, initialVolume = 70 }: UseChantingPla
   useEffect(() => {
     return () => {
       stopCurrentAudio();
+      if (audioContextRef.current) {
+        audioContextRef.current.close();
+      }
     };
   }, []);
 
