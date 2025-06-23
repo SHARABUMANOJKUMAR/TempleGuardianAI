@@ -1,5 +1,6 @@
 
 import { Slider } from '@/components/ui/slider';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ChantingProgressProps {
   currentTime: number;
@@ -16,13 +17,15 @@ export const ChantingProgress = ({
   onSeek, 
   isLoading 
 }: ChantingProgressProps) => {
+  const isMobile = useIsMobile();
+  
   const handleSeek = (newTime: number[]) => {
     onSeek(newTime[0]);
   };
 
   return (
-    <div className="flex items-center gap-2 sm:gap-3 px-2">
-      <span className="text-xs text-amber-600 w-8 sm:w-10 text-left flex-shrink-0 font-mono">
+    <div className={`flex items-center gap-${isMobile ? '2' : '3'} px-2`}>
+      <span className={`text-amber-600 ${isMobile ? 'w-6 text-xs' : 'w-8 text-xs'} text-left flex-shrink-0 font-mono`}>
         {formatTime(currentTime)}
       </span>
       <Slider
@@ -33,7 +36,7 @@ export const ChantingProgress = ({
         className="flex-1 min-w-0"
         disabled={isLoading}
       />
-      <span className="text-xs text-amber-600 w-8 sm:w-10 text-right flex-shrink-0 font-mono">
+      <span className={`text-amber-600 ${isMobile ? 'w-6 text-xs' : 'w-8 text-xs'} text-right flex-shrink-0 font-mono`}>
         {formatTime(duration)}
       </span>
     </div>

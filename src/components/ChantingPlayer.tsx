@@ -5,6 +5,7 @@ import { ChantingProgress } from './chanting/ChantingProgress';
 import { ChantingControls } from './chanting/ChantingControls';
 import { VolumeControl } from './chanting/VolumeControl';
 import { useChantingPlayer } from '@/hooks/useChantingPlayer';
+import { useIsMobile } from '@/hooks/use-mobile';
 import type { Temple } from '@/hooks/useTemples';
 
 interface ChantingPlayerProps {
@@ -51,6 +52,8 @@ const chantingData = [
 ];
 
 export const ChantingPlayer = ({ temple }: ChantingPlayerProps) => {
+  const isMobile = useIsMobile();
+  
   // Filter chants based on temple deity
   const getRelevantChants = () => {
     const deity = temple.deity.toLowerCase();
@@ -96,17 +99,20 @@ export const ChantingPlayer = ({ temple }: ChantingPlayerProps) => {
   } = useChantingPlayer({ chants: relevantChants });
 
   return (
-    <div className="w-full max-w-sm mx-auto">
+    <div className={`w-full ${isMobile ? 'max-w-full px-2' : 'max-w-sm'} mx-auto`}>
       <Card className="bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 border-2 border-amber-300 shadow-xl backdrop-blur-sm">
         <div className="relative overflow-hidden">
           {/* Beautiful gradient background */}
           <div className="absolute inset-0 bg-gradient-to-br from-amber-100 via-orange-100 to-yellow-100 opacity-70"></div>
+          
+          {/* Sacred Om Pattern Background */}
           <div 
-            className="absolute inset-0 opacity-30"
+            className="absolute inset-0 opacity-20"
             style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f59e0b' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f59e0b' fill-opacity='0.15'%3E%3Ctext x='30' y='35' text-anchor='middle' font-size='24'%3E🕉️%3C/text%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+              backgroundSize: isMobile ? '40px 40px' : '60px 60px'
             }}
-          ></div>
+          />
           
           <div className="relative z-10">
             <ChantingInfo
@@ -118,7 +124,7 @@ export const ChantingPlayer = ({ temple }: ChantingPlayerProps) => {
               totalChants={relevantChants.length}
             />
             
-            <div className="px-3 sm:px-4 pb-4 space-y-4">
+            <div className={`${isMobile ? 'px-3 pb-3' : 'px-4 pb-4'} space-y-${isMobile ? '3' : '4'}`}>
               <ChantingProgress
                 currentTime={currentTime}
                 duration={duration}
@@ -141,8 +147,8 @@ export const ChantingPlayer = ({ temple }: ChantingPlayerProps) => {
               />
 
               {/* Spiritual message */}
-              <div className="bg-gradient-to-r from-amber-200 to-orange-200 p-3 rounded-lg border border-amber-300 text-center">
-                <p className="text-amber-900 text-xs leading-relaxed">
+              <div className={`bg-gradient-to-r from-amber-200 to-orange-200 ${isMobile ? 'p-2' : 'p-3'} rounded-lg border border-amber-300 text-center`}>
+                <p className={`text-amber-900 ${isMobile ? 'text-xs' : 'text-xs'} leading-relaxed`}>
                   🕉️ Let the sacred vibrations purify your soul and connect you with the divine energy of {currentChant.deity}
                 </p>
               </div>
